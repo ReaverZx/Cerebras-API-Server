@@ -4,10 +4,11 @@ import os
 
 app = Flask(__name__)
 
+# Initialize the Cerebras client
 client = Cerebras(api_key=os.environ.get("CEREBRAS_API_KEY"))
 
-@app.route("/api/chat", methods=["POST"])
-def chat():
+@app.route("/api/ask", methods=["POST"])
+def ask():
     data = request.json
     user_message = data.get("message", "")
 
@@ -28,7 +29,6 @@ def chat():
         response_text += chunk.choices[0].delta.content or ""
 
     return jsonify({"response": response_text})
-
 
 if __name__ == "__main__":
     # Listen on port 10000 (Render will set $PORT automatically)
